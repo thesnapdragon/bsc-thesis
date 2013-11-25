@@ -3,8 +3,6 @@
 
 A komponensek fejlesztésekor Eclipse fejlesztő környezetet használtam, verziókezeléshez pedig a Git szoftvert. Az alapértelmezett Eclipse IDE azonban nem tökéletes eszköz az OSGi alapú fejlesztéshez, ezért a Bndtools \cite{bndtools} OSGi fejlesztő keretrendszert Eclipse kiegészítő modulként feltelepítve kezdtem neki a komponensek fejlesztésének.
 
-Teszteléshez a könnyen kezelhető Apache Felix \cite{apachefelix} OSGi implementációját használtam, mert annak WebConsole eszközével könnyedén kezelhetőek a komponensek menedzselése, valamint parancssoros hozzáférés is lehetséges, ahol interaktív módon menedzselhetőek a komponensek, sőt még egy egyszerűbb Bash szintaktikáját utánzó szkriptelési lehetőséget is használhatnak a fejlesztők.
-
 \section{WikiBot bundle}
 \label{sec:wikibotbundle}
 
@@ -106,9 +104,7 @@ A feldolgozásra kerülő rendkívül nagy adatmennyiség miatt érdemes megfont
 \section{Logger bundle}
 \label{sec:loggerbundle}
 
-A tervezés részben meghatározott funkcióknak módon implementáltam a komponenst. Ehhez nem kezdtem saját naplózási rendszer kidolgozásába, hanem a már kiforott Apache log4j megoldást építettem be a komponensbe. Az Apache log4j előnyei, hogy a tervezésénél ügyeltek, hogy ne legyen túl nagy hatással az instrumentált kód működésére, és ne kelljen az alkalmazást újrafordítani a naplózás beállításainak módosításához. A log4j beállításait egy konfigurációs fájlban tárolja, ahol széleskörű beállítási lehetőségek használatára van mód.
-
-OSGi környezetben nem ilyen egyszerű az Apache log4j használata. Alapértelmezett esetben a log4j konfigurációs fájlját (log4j.properties) az alkalmazás gyökérkönyvtárába kell helyezni, OSGi környezetben nyilvánvaló módon ez nem működik. A legegyszerűbb megoldás fragment bundle készítése lenne, melynek nincs BundleActivator osztálya és megosztja classloaderét egy szülő komponenssel. Ennek azonban nagy hátránya van és az Apache log4j egyik előnyét veszítenénk el, mert fragment bundle készítésénél a konfigurációs fájlt a forráskóddal együtt be kell csomagolni a komponensbe. Így nem lesz konfigurálható a naplózás formája, szintjei, be lesz égetve egy bundle-be minden beállítás.
+A tervezés részben meghatározott funkcióknak megfelelő módon implementáltam a komponenst. Nem kezdtem saját naplózási rendszer kidolgozásába, hanem a már kiforott Apache log4j megoldást építettem be a komponensbe. Az Apache log4j előnyei, hogy a tervezésénél ügyeltek arra, hogy ne legyen túl nagy hatással az instrumentált kód működésére, és ne kelljen az alkalmazást újrafordítani a naplózás beállításainak módosításához. A log4j beállításait egy konfigurációs fájlban tárolja, ahol széleskörű beállítási lehetőségek használatára van mód.
 
 \begin{figure}[htp]
 \centering
@@ -117,12 +113,26 @@ OSGi környezetben nem ilyen egyszerű az Apache log4j használata. Alapértelme
 \label{fig:sequence_logger}
 \end{figure}
 
+OSGi környezetben nem ilyen egyszerű az Apache log4j használata. Alapértelmezett esetben a log4j konfigurációs fájlját (log4j.properties) az alkalmazás gyökérkönyvtárába kell helyezni, OSGi környezetben nyilvánvaló módon ez nem működik. A legegyszerűbb megoldás fragment bundle készítése lenne, melynek nincs BundleActivator osztálya és megosztja classloaderét egy szülő komponenssel. Ennek azonban nagy hátránya van és az Apache log4j egyik előnyét veszítenénk el, mert fragment bundle készítésénél a konfigurációs fájlt a forráskóddal együtt be kellene csomagolni a komponensbe. Így nem lesz konfigurálható a naplózás formája, szintjei, be lesz égetve egy bundle-be minden beállítás.
+
 A fenti hátrányokat elkerülhetjük, ha runtime property-ként megadjuk a helyét a merevlemezen tárolt log4j.properties fájlnak a Felix konfigurációjában. A naplózás beállítását egy szöveges fájlban leírhatjuk és azt a rendszerben bárhol elhelyezhetjük. Az Apache log4j beállítását és OSGi szolgáltatásként való kiajánlását a komponens indulásakor kell megtennünk (\ref{fig:sequence_logger}.~ábra).
 
 % section loggerbundle (end)
 
 \section{Statistics bundle}
 \label{sec:statisticsbundle}
+
+A Statistics komponens implementálásakor tehát két servletet és egy adatokat gyüjtő és tárolót kellett létrehozni. A tároló felépítése nagyon egyszerű, a tervezéskor meghatározott metrikákat reprezentáló adatokat tárolja attribútumokban, és implementálja egy kiajánlott OSGi szolgáltatás által meghatározott metrikák módosítására és lekérdezésére szolgáló metódusokat.
+
+A servletek készítése egy kicsit bonyolultabb volt, mert ahhoz, hogy a servlet HTTP-n keresztül elérhető legyen be kell regisztrálni egy servlet container-be. A JEE/J2EE fejlesztés során megszokott web.xml fájlon keresztüli konfigurációt nem használhatjuk, OSGi környezetben, ezért az org.osgi.util.tracker.ServiceTracker osztályban kell beregisztrálnunk servletünket. Ehhez az előbbi osztályból kellett leszármaztatni egy osztályt (HttpServiceTracker a \ref{fig:class_statistics}.~ábrán) és felülírni az addingService és removedService metódusait, ahol be kellett regisztrálni a servlet osztályokat.
+
+\begin{lstlisting}[label={lst:apidata}, caption=A WikiprocessorAPI által szolgáltatott adatok,breaklines=true]
+{"articlesData":{"eltárolt cikkek száma":2785,"frissített cikkek száma":877,"újonnan beillesztett cikkek száma":1908,"nem feldolgozott cikkek száma":13},
+"logsData":{"error üzenetek száma":3,"warning üzenetek száma":11,"debug üzenetek száma":4},
+"queuelength":6013,"mainworkingparsoids":0.5714285714285714,"dumpworkingparsoids":0.8,"dumpprocess":0.11469880217730487}
+\end{lstlisting}
+
+A WikiprocessorAPI servlet a metrikák alapján JSON formátumban teszi közzé a feldolgozólánc adatait, így ez a servlet gyakorlatilag egy webes API-nak tekinthető. A StatisticsView egy statikus HTML oldalt szolgál ki, ahol az előbbi API-t felhasználva JavaScript segítségével diagramokat rajzol ki a servlet. A létrehozott diagramok a metrikákat alakítják a felhasználók számára sokkal jobban megfigyelhető formába.
 
 % section statisticsbundle (end)
 

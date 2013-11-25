@@ -6,7 +6,7 @@ Az OSGi Alliance \cite{osgi} által fejlesztett OSGi (\textit{Open Services Gate
 \section{Bundle}
 \label{sec:bundle}
 
-Az OSGi technológiát \cite{osgiintro} használó alkalmazások kisebb komponensekre (az OSGI terminológiát használva csomagokra, azaz \textit{bundle}-ökre) vannak bontva. Ezen csomagok elkészíthetőek, lefordíthatóak, telepíthetőek egymástól függetlenül, életciklusukat maga az OSGi keretrendszer felügyeli. A bundle-ök gyakorlatilag nem mások, mint a jól ismert JAR fájlok (Java osztályok, és egyéb erőforrások), azzal a különbséggel, hogy a leíró manifest állományban a szabvány által kiterjesztett módon további fejlécek találhatóak meg. Példát látunk manifest állományra a \ref{lst:manifest}.~kódrészletben.
+Az OSGi technológiát \cite{osgiintro} használó alkalmazások kisebb komponensekre (az OSGI terminológiát használva csomagokra, azaz \textit{bundle}-ökre) vannak bontva. Ezen csomagok elkészíthetőek, lefordíthatóak, telepíthetőek egymástól függetlenül, életciklusukat maga az OSGi keretrendszer felügyeli. A bundle-ök gyakorlatilag nem mások, mint a jól ismert JAR fájlok (Java osztályok, és egyéb erőforrások), azzal a különbséggel, hogy a leíró manifest állományban a szabvány által kiterjesztett módon további fejlécek találhatóak meg. Példát látunk manifest állományra a \ref{lst:manifest}.~kódrészletben. A manifest-ben lévő metaadatok nagy része emberi felhasználás céljából szerepel és nem módosítják az OSGi rendszer működését, kivétel a \textsc{Bundle-Activator} és az \textsc{Import-Package} fejlécek.
 
 A manifest állomány elemei:
 
@@ -36,14 +36,16 @@ Private-Package: org.notavailable.helloworld
 
 % section bundle (end)
 
-A bundle-ök egy OSGi példányon belül, azonos JVM-ben futnak. Ennek vannak előnyei (teljesítmény növekedés, kisebb erőforráshasználat, interprocess kommunikációt nem szükséges használni), de hátrányai is (hozzáférési problémák), melyeket az OSGi úgy old meg, hogy minden bundle-höz saját classloader-t rendel.
+A bundle-ök egy OSGi példányon belül, azonos JVM-ben futnak. Ennek vannak előnyei (teljesítmény növekedés, kisebb erőforráshasználat, interprocessz kommunikációt nem szükséges használni), de hátrányai is (hozzáférési problémák), melyeket az OSGi úgy old meg, hogy minden bundle-höz saját classloader-t rendel.
+
+Ha egy komponens kapcsolatba akar lépni az OSGi keretrendszerben lévő más komponenssel akkor azt a hozzá tartozó egyedi \textsc{BundleContext}-en keresztül teheti meg. A \textsc{BundleContext} megszerzéséhez implementálnia kell a \textsc{BundleActivator} interfészt (\ref{fig:class_bundleactivator}.~ábra), melynek \textsc{.start()} és \textsc{.stop()} metódusainak argumentumaként megkapják a bundle kontextust, illetve előbbi metódusok meghívódnak a komponens indításakor és leállításakor.
 
 \section{Service, Service Registry}
 \label{sec:service}
 
 A bundle-ök kiajánlhatnak szolgáltatásokat (\textit{service}), melyekre más bundle-ök feliratkozhatnak. Az OSGi specifikáció szerint a szolgáltatások normál Java objektumok, melyek egy adott interfészt implementálva lettek beregisztrálva az OSGi \textit{Service Registry} moduljába.
 
-A Service Registry segítségével tudnak tehát a bundle-ök kiajánlani szolgáltatásokat, rajtuk keresztül tudják lekérdezni az elérhető szolgáltatásokat. Ha egy bundle-nek szüksége van egy másik bundle által kiajánlott szolgáltatásra, akkor az OSGi keretrendszer megteremti közöttük a kapcsolatot és a kért szolgáltatást használhatja az adott bundle.
+A Service Registry segítségével tudnak tehát a bundle-ök kiajánlani szolgáltatásokat, rajtuk keresztül tudják lekérdezni az elérhető szolgáltatásokat. Ha egy bundle-nek szüksége van egy másik bundle által kiajánlott szolgáltatásra, akkor az OSGi keretrendszertől lekéri a \textsc{BundleContext}-en keresztül az adott szolgáltatás referenciáját.
 
 % section service (end)
 
@@ -59,7 +61,7 @@ A Service Registry segítségével tudnak tehát a bundle-ök kiajánlani szolg�
 
 \begin{table}[htb]
 \begin{center}
-\begin{tabular}{|c|c|}
+\begin{tabular}{|L{3cm}|L{10cm}|}
 \hline
 \textbf{Állapot neve} & \textbf{Leírás} \\
 \hline
@@ -81,10 +83,12 @@ UNINSTALLED & A bundle el lett távolítva, ez az életciklus végállapota. \\
 \caption{\label{tab:lifecycle_states} Bundle életciklus állapotai}
 \end{table}
 
-Az OSGi keretrendszer dinamikusságát a \textit{Life-cycle} (életciklus) modul szolgáltatja, mely által a bundle-öket futásidőben lehet telepíteni, elindítani, leállítani, frissíteni, eltávolítani más hagyományos alkalmazásokkal ellentétben. A bundle-ök futtatása előtt megvizsgálja a keretrendszer a csomag futás idejű függőségeit, és ha olyan kielégítetlen függőségeket talál, melyek szükségesek a bundle futtatásához, akkor nem indítja el a komponenst.
+Az OSGi keretrendszer dinamikusságát a \textit{Life-cycle} (életciklus) rendszer szolgáltatja, mely által a bundle-öket futásidőben lehet telepíteni, elindítani, leállítani, frissíteni, eltávolítani más hagyományos alkalmazásokkal ellentétben. A bundle-ök futtatása előtt megvizsgálja a keretrendszer a csomag futás idejű függőségeit, és ha olyan kielégítetlen függőségeket talál, melyek szükségesek a bundle futtatásához, akkor nem indítja el a komponenst.
 
 Egy bundle életciklusának állapotai megfigyelhetőek a \ref{fig:bundle_lifecycle}.~ábrán, valamint az állapotok leírása a \ref{tab:lifecycle_states}.~táblázatban látható.
 
 % section lifecycle (end)
+
+% TODO: http://felix.apache.org/site/apache-felix-osgi-tutorial.html EXAMPLE 4-től
 
 % chapter osgi (end)
