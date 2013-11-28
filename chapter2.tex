@@ -6,7 +6,7 @@ Az OSGi Alliance \cite{osgi} által fejlesztett OSGi (\textit{Open Services Gate
 \section{Bundle}
 \label{sec:bundle}
 
-Az OSGi technológiát \cite{osgiintro} használó alkalmazások kisebb komponensekre (az OSGI terminológiát használva csomagokra, azaz \textit{bundle}-ökre) vannak bontva. Ezen csomagok elkészíthetőek, lefordíthatóak, telepíthetőek egymástól függetlenül, életciklusukat maga az OSGi keretrendszer felügyeli. A bundle-ök gyakorlatilag nem mások, mint a jól ismert JAR fájlok (Java osztályok, és egyéb erőforrások), azzal a különbséggel, hogy a leíró manifest állományban a szabvány által kiterjesztett módon további fejlécek találhatóak meg. Példát látunk manifest állományra a \ref{lst:manifest}.~kódrészletben. A manifest-ben lévő metaadatok nagy része emberi felhasználás céljából szerepel és nem módosítják az OSGi rendszer működését, kivétel a \textsc{Bundle-Activator} és az \textsc{Import-Package} fejlécek.
+Az OSGi technológiát \cite{osgiintro} használó alkalmazások kisebb komponensekre (az OSGI terminológiát használva csomagokra, azaz \textit{bundle}-ökre) vannak bontva. Ezen csomagok elkészíthetőek, lefordíthatóak, telepíthetőek egymástól függetlenül, életciklusukat maga az OSGi keretrendszer felügyeli. A bundle-ök gyakorlatilag nem mások, mint a jól ismert JAR fájlok (Java osztályok, és egyéb erőforrások), azzal a különbséggel, hogy a leíró manifest állományban a szabvány által kiterjesztett módon további fejlécek találhatóak meg. Példát látunk manifest állományra a \ref{lst:manifest}.~kódrészletben. A manifest-ben lévő metaadatok nagy része emberi felhasználás céljából szerepel és nem módosítják az OSGi rendszer működését, kivétel a \texttt{Bundle-Activator} és az \texttt{Import-Package} fejlécek.
 
 A manifest állomány elemei:
 
@@ -38,14 +38,52 @@ Private-Package: org.notavailable.helloworld
 
 A bundle-ök egy OSGi példányon belül, azonos JVM-ben futnak. Ennek vannak előnyei (teljesítmény növekedés, kisebb erőforráshasználat, interprocessz kommunikációt nem szükséges használni), de hátrányai is (hozzáférési problémák), melyeket az OSGi úgy old meg, hogy minden bundle-höz saját classloader-t rendel.
 
-Ha egy komponens kapcsolatba akar lépni az OSGi keretrendszerben lévő más komponenssel akkor azt a hozzá tartozó egyedi \textsc{BundleContext}-en keresztül teheti meg. A \textsc{BundleContext} megszerzéséhez implementálnia kell a \textsc{BundleActivator} interfészt (\ref{fig:class_bundleactivator}.~ábra), melynek \textsc{.start()} és \textsc{.stop()} metódusainak argumentumaként megkapják a bundle kontextust, illetve előbbi metódusok meghívódnak a komponens indításakor és leállításakor.
+Ha egy komponens kapcsolatba akar lépni az OSGi keretrendszerben lévő más komponenssel akkor azt a hozzá tartozó egyedi \texttt{BundleContext}-en keresztül teheti meg. A \texttt{BundleContext} megszerzéséhez implementálnia kell a \texttt{BundleActivator} interfészt (\ref{fig:class_bundleactivator}.~ábra), melynek \texttt{.start()} és \texttt{.stop()} metódusainak argumentumaként megkapják a bundle kontextust, illetve előbbi metódusok meghívódnak a komponens indításakor és leállításakor.
 
 \section{Service, Service Registry}
 \label{sec:service}
 
 A bundle-ök kiajánlhatnak szolgáltatásokat (\textit{service}), melyekre más bundle-ök feliratkozhatnak. Az OSGi specifikáció szerint a szolgáltatások normál Java objektumok, melyek egy adott interfészt implementálva lettek beregisztrálva az OSGi \textit{Service Registry} moduljába.
 
-A Service Registry segítségével tudnak tehát a bundle-ök kiajánlani szolgáltatásokat, rajtuk keresztül tudják lekérdezni az elérhető szolgáltatásokat. Ha egy bundle-nek szüksége van egy másik bundle által kiajánlott szolgáltatásra, akkor az OSGi keretrendszertől lekéri a \textsc{BundleContext}-en keresztül az adott szolgáltatás referenciáját.
+A Service Registry segítségével tudnak tehát a bundle-ök kiajánlani szolgáltatásokat, rajtuk keresztül tudják lekérdezni az elérhető szolgáltatásokat. Ha egy bundle-nek szüksége van egy másik bundle által kiajánlott szolgáltatásra, akkor az OSGi keretrendszertől lekéri a \texttt{BundleContext}-en keresztül az adott szolgáltatás referenciáját.
+
+Még robusztusabb használat lehetséges, hogy ha implementáljuk a \texttt{ServiceListener} interfészt (.serviceChanged(ServiceEvent e) metódust), mellyel értesülhetünk a regisztrált illetve eltávolított szolgáltatásokról, így dinamikusan követhetjük a szolgáltatások elérhetőségét, felkészülhetünk például egy hirtelen kieső szolgáltatás kezelésére. Ugyanezt a funkcionalitást elérhetjük másképpen egy \texttt{ServiceTracker} példány használatával is.
+
+A szolgáltatások kezelése ezen módszerek használatával azonban nem skálázódik jól, összetett rendszerekben egyszerűbb technológiák használata jobban kifizetődő. Lássunk tehát néhány példát a szolgáltatások dinamikus kezelésére:
+
+\begin{description}
+	\item[Service Binder] A Service Binder komponens létezésének ma már csak történeti okai vannak, mivel a későbbi OSGi R4 specifikációban megjelent újdonságok (Declarative Services, Dependency Manager, iPOJO) teljes mértékben helyettesítik ezt a megoldást. A Service Binder megpróbálja a bonyolult Activator példányok implementációját megkerülni és automatizált módon kezelni a komponens szolgáltatás függőségeit.
+	
+	A korábbi BundleActivator osztályból való leszármaztatás helyett a \texttt{GenericActivator} osztályból kell leszármaztatni az osztályunkat, és egy XML fájlban deklaratív módon kell meghatározni, hogy milyen példányokat akarunk létrehozni és azoknak milyen függőségei vannak.
+	
+	\item[Declarative Services] A Declarative Services egy komponens model, melynek felépítését befolyásolta a korábbi Service Binder megoldás. A technológia célja, hogy leegyszerűsítse az olyan OSGi komponensek készítését, melyek OSGi szolgáltatásokat használnak.
+	
+	Fontos jellemzők, hogy használatával nincs szükség explicit módon implementálni a szolgáltatások kiajánlását és felhasználását, ezek deklaratív módon teljes mértékben XML segítségével végezhetőek el, leszármaztatásra vagy interfész implementációra nincs szükség; a szolgáltatások implementációja a \textit{lazy loading} tervezési mintát követi; a komponensek konfigurációja bármikor megtörténhet Configuration Admin szolgáltatás segítségével.
+	
+\begin{figure}[htp]
+\centering
+\includegraphics[scale=0.5]{img/dependencymanager}
+\caption{DependencyManager osztálydiagram}
+\label{fig:dependencymanager}
+\end{figure}
+	
+	\item[Dependency Manager] Ebben az esetben a \texttt{DedendencyActivatorBase}-ből kell leszármaztatni az osztályunkat, és implementálni az .init() és .destroy() metódusokat (\ref{fig:dependencymanager}.~ábra). A \texttt{DependencyManager} példány segítségével pedig a Decorator mintát használva adhatunk hozzá szolgáltatásokat, és azok függőségeit a komponenshez és konfigurálhatjuk azokat (\ref{lst:dependencymanager_example}.~kódrészlet).
+
+\begin{lstlisting}[label={lst:dependencymanager_example}, caption=Példa a DependencyManager használatára,breaklines=true]
+manager.add(createService()
+    .setInterface(WebService.class.getName(), null)
+    .setImplementation(WebServiceImpl.class)
+    .add(createServiceDependency()
+        .setService(ConfigurationAdmin.class, null)
+        .setRequired(true))
+    .add(createServiceDependency()
+        .setService(LogService.class, null)
+        .setRequired(false));
+\end{lstlisting}
+
+    \item[iPOJO] Az iPOJO komponens model központi koncepciója, hogy ne legyen szükség POJO példányoknál bonyolultabb objektumok használatára. Használatát tekintve nagyon hasonló a Declarative Services-hez, azonban az iPOJO kicsit több eszközt kínál a fejlesztőknek. A komponenshez szükséges szolgáltatásokat és azok függőségeit szintén XML fájlban kell deklaratív módon specifikálni, és a rendszer automatikusan kezeli ezeket a függőségeket. Újdonságok a korábbi megoldásokhoz képest például a Java annotációk támogatása, API hozzáférés a belső működéshez, könnyű kiegészíthetőség, beépített távoli konfiguráció JMX segítségével.
+ 
+\end{description}
 
 % section service (end)
 
@@ -88,7 +126,5 @@ Az OSGi keretrendszer dinamikusságát a \textit{Life-cycle} (életciklus) rends
 Egy bundle életciklusának állapotai megfigyelhetőek a \ref{fig:bundle_lifecycle}.~ábrán, valamint az állapotok leírása a \ref{tab:lifecycle_states}.~táblázatban látható.
 
 % section lifecycle (end)
-
-% TODO: http://felix.apache.org/site/apache-felix-osgi-tutorial.html EXAMPLE 4-től
 
 % chapter osgi (end)

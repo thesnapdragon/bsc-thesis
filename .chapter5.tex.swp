@@ -84,7 +84,7 @@ A teljesítményméréseket az \textit{iostat} nevű ingyenes és nyíltforrásk
 
 \begin{figure}[htp]
 \centering
-\includegraphics[scale=0.3]{img/measurement_io}
+\includegraphics[scale=0.2]{img/measurement_io}
 \caption{A mérés során mért lemezhasználat}
 \label{fig:measurement_io}
 \end{figure}
