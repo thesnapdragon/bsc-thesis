@@ -1,12 +1,14 @@
 \chapter{Az OSGi keretrendszerről}
 \label{cha:osgi}
 
-Az OSGi Alliance \cite{osgi} által fejlesztett OSGi (\textit{Open Services Gateway initiative}) egy Java nyelvű, dinamikus, szolgáltatás orientált komponens modell és keretrendszer, mellyel kiterjeszthető az alap Java nyelven készült programok funkcionalitása. Használatával elérhető válik egy komponens alapú fejlesztés, ahol alkalmazásokat (illetve komponenseket) távolról elérve telepíthetjük, elindíthatjuk, leállíthatjuk, frissíthetjük, vagy törölhetjük anélkül, hogy a teljes alkalmazást leállítanánk és újra elindítanánk. A standard Java-val készült alkalmazásoknál ez egy fontos hiányosság, hiszen az információs rendszerek sok területén nem engedhetőek meg akár a pillanatnyi leállások sem. A flexibilitás és újrafelhasználhatóság követelményeknek tehát nagyon jól megfelel az OSGi keretrendszer, ezért is esett rá a választás.
+Az OSGi Alliance \cite{osgi} által fejlesztett OSGi (\textit{Open Services Gateway initiative}) egy Java nyelvű, dinamikus, szolgáltatás orientált komponens modell és keretrendszer, mellyel kiterjeszthető az alap Java nyelven készült programok funkcionalitása. Használatával elérhető válik egy komponens alapú fejlesztés, ahol alkalmazásokat (illetve komponenseket) távolról elérve telepíthetjük, elindíthatjuk, leállíthatjuk, frissíthetjük, vagy törölhetjük anélkül, hogy a teljes alkalmazást leállítanánk és újra elindítanánk. A standard Java-val készült alkalmazásoknál ez egy fontos hiányosság, hiszen az információs rendszerek sok területén nem engedhetőek meg akár a pillanatnyi leállások sem.
+
+A flexibilitás és újrafelhasználhatóság követelményeknek tehát nagyon jól megfelel az OSGi keretrendszer, ezért is esett rá a választás. Léteznek természetesen más, komponens alapú modelt használó technológiák, például: Microsoft Common Object Model, Enterprise JavaBeans, CORBA Component Model. Ezek közül azonban a legtöbb egy komplex programozási modelen alapul, amely megköveteli konvenciók követését és az OSGi-al szemben nem támogatják a komponensek dinamikus frissítését, így flexibilitást szempontjából elmaradnak ilyen szempontból.
 
 \section{Bundle}
 \label{sec:bundle}
 
-Az OSGi technológiát \cite{osgiintro} használó alkalmazások kisebb komponensekre (az OSGI terminológiát használva csomagokra, azaz \textit{bundle}-ökre) vannak bontva. Ezen csomagok elkészíthetőek, lefordíthatóak, telepíthetőek egymástól függetlenül, életciklusukat maga az OSGi keretrendszer felügyeli. A bundle-ök gyakorlatilag nem mások, mint a jól ismert JAR fájlok (Java osztályok, és egyéb erőforrások), azzal a különbséggel, hogy a leíró manifest állományban a szabvány által kiterjesztett módon további fejlécek találhatóak meg. Példát látunk manifest állományra a \ref{lst:manifest}.~kódrészletben. A manifest-ben lévő metaadatok nagy része emberi felhasználás céljából szerepel és nem módosítják az OSGi rendszer működését, kivétel a \texttt{Bundle-Activator} és az \texttt{Import-Package} fejlécek.
+Az OSGi technológiát \cite{osgiintro}\cite{hall_challenges_2004}\cite{towardosgi} használó alkalmazások kisebb komponensekre (az OSGI terminológiát használva csomagokra, azaz \textit{bundle}-ökre) vannak bontva. Ezen csomagok elkészíthetőek, lefordíthatóak, telepíthetőek egymástól függetlenül, életciklusukat maga az OSGi keretrendszer felügyeli. A bundle-ök gyakorlatilag nem mások, mint a jól ismert JAR fájlok (Java osztályok, és egyéb erőforrások), azzal a különbséggel, hogy a leíró manifest állományban a szabvány által kiterjesztett módon további fejlécek találhatóak meg. Példát látunk manifest állományra a \ref{lst:manifest}.~kódrészletben. A manifest-ben lévő metaadatok nagy része emberi felhasználás céljából szerepel és nem módosítják az OSGi rendszer működését, kivétel a \texttt{Bundle-Activator} és az \texttt{Import-Package} fejlécek.
 
 A manifest állomány elemei:
 
@@ -97,6 +99,10 @@ manager.add(createService()
 \label{fig:bundle_lifecycle}
 \end{figure}
 
+Az OSGi keretrendszer dinamikusságát a \textit{Life-cycle} (életciklus) rendszer szolgáltatja, mely által a bundle-öket futásidőben lehet telepíteni, elindítani, leállítani, frissíteni, eltávolítani más hagyományos alkalmazásokkal ellentétben. A bundle-ök futtatása előtt megvizsgálja a keretrendszer a csomag futás idejű függőségeit, és ha olyan kielégítetlen függőségeket talál, melyek szükségesek a bundle futtatásához, akkor nem indítja el a komponenst.
+
+Egy bundle életciklusának állapotai megfigyelhetőek a \ref{fig:bundle_lifecycle}.~ábrán, valamint az állapotok leírása a \ref{tab:lifecycle_states}.~táblázatban látható.
+
 \begin{table}[htb]
 \begin{center}
 \begin{tabular}{|L{3cm}|L{10cm}|}
@@ -121,9 +127,6 @@ UNINSTALLED & A bundle el lett távolítva, ez az életciklus végállapota. \\
 \caption{\label{tab:lifecycle_states} Bundle életciklus állapotai}
 \end{table}
 
-Az OSGi keretrendszer dinamikusságát a \textit{Life-cycle} (életciklus) rendszer szolgáltatja, mely által a bundle-öket futásidőben lehet telepíteni, elindítani, leállítani, frissíteni, eltávolítani más hagyományos alkalmazásokkal ellentétben. A bundle-ök futtatása előtt megvizsgálja a keretrendszer a csomag futás idejű függőségeit, és ha olyan kielégítetlen függőségeket talál, melyek szükségesek a bundle futtatásához, akkor nem indítja el a komponenst.
-
-Egy bundle életciklusának állapotai megfigyelhetőek a \ref{fig:bundle_lifecycle}.~ábrán, valamint az állapotok leírása a \ref{tab:lifecycle_states}.~táblázatban látható.
 
 % section lifecycle (end)
 

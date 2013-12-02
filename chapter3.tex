@@ -69,7 +69,7 @@ Ebben a komponensben kell lennie valamilyen tároló elemnek, egyfajta queue meg
 
 Ahhoz, hogy egy másik komponens el tudjon tárolni a Parser-ben valamit, ahhoz létre kell hozni a Parser komponensben egy szolgáltatást (OSGi service), amelyen keresztül a kommunikáció megtörténhet. Ez az szolgáltatás egyben az egész program mozgatórugója is, hiszen a további use-case-ekben található funkciókat akkor tudjuk végrehajtani, ha legalább egy cikk már el lett tárolva.
 
-Ennél a résznél használtam az \textit{Observer} tervezési mintát: a QueueManager osztály \texttt{Observable} lett, míg egy \texttt{Observer}-ből származó \texttt{WikiObserver} kezelte a tárolóba került új elemeket (\ref{fig:class_parser}.~ábra).
+Ennél a résznél használtam az \textit{Observer} tervezési mintát\cite{designpatterns}: a QueueManager osztály \texttt{Observable} lett, míg egy \texttt{Observer}-ből származó \texttt{WikiObserver} kezelte a tárolóba került új elemeket (\ref{fig:class_parser}.~ábra).
 
 \begin{figure}[htp]
 \centering
@@ -78,7 +78,7 @@ Ennél a résznél használtam az \textit{Observer} tervezési mintát: a QueueM
 \label{fig:class_parser}
 \end{figure}
 
-Az Observer tervezési mintának köszönhetően, ha új elem kerül a queue-ba, akkor arról a WikiObserver értesülni fog. Mivel a cikkek feldolgozása jelentős időt vehet igénybe, azokat mindenképpen külön szálakon kell megtenni. Ezt a problémát a \textit{Threadpool} tervezési mintával oldottam meg. A WikiObserver-nek (\ref{fig:class_parser2}.~ábra) van egy ThreadPool példánya, és ha értesül a queue frissüléséről, egy új feladatot fog a ThreadPool-hoz hozzáadni. A ThreadPool mintának megfelelően minden feladat (\texttt{WikiWorker}) külön szálon fut. 
+Az Observer tervezési mintának köszönhetően, ha új elem kerül a queue-ba, akkor arról a WikiObserver értesülni fog. Mivel a cikkek feldolgozása jelentős időt vehet igénybe, azokat mindenképpen külön szálakon kell megtenni. Ezt a problémát a \textit{Threadpool} tervezési mintával oldottam meg\cite{javaconcurrencyinpractice}. A WikiObserver-nek (\ref{fig:class_parser2}.~ábra) van egy ThreadPool példánya, és ha értesül a queue frissüléséről, egy új feladatot fog a ThreadPool-hoz hozzáadni. A ThreadPool mintának megfelelően minden feladat (\texttt{WikiWorker}) külön szálon fut. 
 
 \begin{figure}[htp]
 \centering
@@ -92,7 +92,7 @@ Ebben a fázisban első lépésben először letöltődnek a hivatalos Wikipedia
 Azonban ez a Wikitext formátum kevésbé jól feldolgozható, mint például a HTML formátum, így a cikkek szövegét HTML formába célszerű alakítani. A második fázisban tehát ez az átalakítás történik meg, ha nem volt még újabb verziójú változat az adott cikkből az adatbázisban. Ehhez úgynevezett parser-eket lehet használni, melyből három felcserélhető, különböző előnyökkel és hátrányokkal rendelkező változat is került a feldolgozóláncba.
 
 \begin{itemize}
-	\item Sztakipedia parser: Könnyen testreszabható és általános célú program, mely a MediaWiki Wikitext formátumról tud HTML formátumra átalakítani. Ez a program egy könnyen kiterjeszthető \textit{Visitor} tervezési mintára alapuló szoftver, mely önálló csomagként is használható a jól felépített API-nak köszönhetően. Használata nagyon egyszerű, használható kimenetet állít elő és sebesség szempontjából is jól teljesít, viszont nagyon nagy méretű fájloknál, például egy teljes Wikipedia dump feldolgozásánál rendkívül sok memóriát használ. Ennek a tulajdonságnak köszönhetően, csak on-the-fly feldolgozás során használható eredményesen ez a parser.
+	\item Sztakipedia parser\cite{sztakipediaparser}: Könnyen testreszabható és általános célú program, mely a MediaWiki Wikitext formátumról tud HTML formátumra átalakítani. Ez a program egy könnyen kiterjeszthető \textit{Visitor} tervezési mintára alapuló szoftver, mely önálló csomagként is használható a jól felépített API-nak köszönhetően. Használata nagyon egyszerű, használható kimenetet állít elő és sebesség szempontjából is jól teljesít, viszont nagyon nagy méretű fájloknál, például egy teljes Wikipedia dump feldolgozásánál rendkívül sok memóriát használ. Ennek a tulajdonságnak köszönhetően, csak on-the-fly feldolgozás során használható eredményesen ez a parser.
 	
 	\item DumbRegexWikiParser parser: A végletekig leegyszerűsített MediaWiki Wikitext átalakító, mely egy SAX parser implementáció. Az állapotgépes Wikitext feldolgozásnak köszönhetően nem fogyaszt annyi memóriát, mint a Sztakipedia parser, sebesség szempontjából még gyorsabb is az előzőnél, viszont kevésbé használható kimenetet produkál.
 	
@@ -147,7 +147,7 @@ Az adatbázis komponens alapjául szolgáló adatbázis kiválasztását a WikiB
 \begin{enumerate}
 	\item Prevayler: Egy nagyon egyszerű és gyors adatbázis, melynek lényege, hogy minden objektumot egyszerű Java objektumokként (POJO) tartsunk a memóriában, és a tranzakciókat naplózzuk, az adatbázis pedig a használó programba beágyazottan fut. A tárolandó objektumokra egyetlen megkötés, hogy implementálják a Serializable interfészt, és a műveletek is szerializálható objektumok legyenek. A műveleteket a Prevayler naplózza, és időnként teljes mentést (snapshotot) készít az adatbázisról, így egy rollback esetén a snapshotot visszaállítja és lefuttatja még a szükséges tranzakciókat.
 	
-Felépítéséből adódóan sokkal gyorsabb mint bármelyik RDBMS, viszont OSGi környezetben a használata egyelőre nem megoldott. A probléma oka, hogy minden OSGi komponensnek saját classloader-e van, így osztályok dinamikus betöltése, például szerializációval nem lehetséges az OSGi programokban. A megoldás lehetne új BundleClassLoader implementálása, azonban ez a Prevayler használatának egyszerűségét rontaná el, így inkább másik megoldást választottam.
+Felépítéséből adódóan sokkal gyorsabb mint bármelyik RDBMS, viszont OSGi környezetben a használata egyelőre nem megoldott. A probléma oka, hogy minden OSGi komponensnek saját classloader-e van, így osztályok dinamikus betöltése, például szerializációval nem lehetséges az OSGi programokban \cite{hall04osgi}. A megoldás lehetne új BundleClassLoader implementálása, azonban ez a Prevayler használatának egyszerűségét rontaná el, így inkább másik megoldást választottam.
 
     \item H2DB: Az összegyűjtött tapasztalatok alapján arra jutottam, hogy OSGi környezetben kevésbé érdemes beágyazott adatbázist választani, ha több komponens között is meg kell oldani a kommunikációt, hiszen belső működésüket tekintve ezen adatbázisok szinte mindig használnak valamilyen szerializációs eljárást. Ez egy objektum relációs adatbázis, mely tud beágyazott és kliens-szerver módban is működni. A készítők teljesítménytesztjei alapján gyorsabb a legtöbb népszerű adatbáziskezelőnél (HSQLDB, Derby, MySQL, PostgreSQL), valamint tervezésekor megpróbálták a HSQLDB és a Derby adatbáziskezelők előnyeit is egyesíteni benne.
     
