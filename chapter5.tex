@@ -6,7 +6,7 @@
 
 A feldolgozólánc teszteléséhez elő kellett állítani először a komponensek futtatható változatát. A komponensek implementációjakor használt Bndtools eszköz ebben is nagy segítségemre volt, mert az alkalmazás futtatásakor a Bndtools automatikusan előállította a telepíthető csomagokat. Az egyes komponensek könyvtári függőségeit, amelyek nem részei az alap OSGi futtató környezetnek (tipikusan ezek a harmadik féltől származó könyvtárak) magamnak kellett előállítanom szintén a Bndtools segítségével.
 
-A fordításnál előállított JAR formátumú bundle-ök módosítás nélkül telepíthetőek valamilyen OSGi alapú rendszert futtatni képes környezetbe (bundle repository-ba). Fejlesztés során a gyorsabb tesztelhetőség miatt az Eclipse saját OSGi implementációs megoldását az Equinox-ot használtam. Egy stabil változat elkészítése után pedig, bizonyos szinten automatizáltan, szkriptek segítségével telepítettem az alkalmazást a SZTAKI Cloud-ban foglalt virtuális gépre, melyet az alkalmazás futtatására készítettem elő tesztelés céljából.
+A fordításnál előállított JAR formátumú bundle-ök módosítás nélkül telepíthetőek valamilyen OSGi alapú rendszert futtatni képes környezetbe (\textit{bundle repository}-ba). Fejlesztés során a gyorsabb tesztelhetőség miatt az Eclipse saját OSGi implementációs megoldását az Equinox-ot használtam. Egy stabil változat elkészítése után pedig, bizonyos szinten automatizáltan, szkriptek segítségével telepítettem az alkalmazást a SZTAKI Cloud-ban foglalt virtuális gépre, melyet az alkalmazás futtatására készítettem elő tesztelés céljából.
 
 A telepítési környezetben már a könnyen kezelhető Apache Felix \cite{apachefelix} OSGi implementációját használtam, mert annak WebConsole eszközével könnyedén kezelhetőek a komponensek menedzselése, valamint parancssoros hozzáférés is lehetséges, ahol interaktív módon menedzselhetőek a komponensek, sőt még egy egyszerűbb Bash szintaktikáját utánzó szkriptelési lehetőséget is használhatnak a fejlesztők. Teszteléskor a virtuális gépre SSH-n belépve, az Apache Felix konzolos felületét használva telepítettem az elkészített bundle-öket és függőségeiket.
 
@@ -30,11 +30,29 @@ A bundle-ök menedzselését a konzolos Apache Felix Gogo Shell-en kívül, egy 
 
 A tesztelés során egy lehetséges felhasználási módot próbáltam ki, mikor a feldolgozólánchoz egy MTA SZTAKI által készített kutatómodult illesztettem. A modul segítségével gépi tanulás, természetes nyelvi feldolgozás témakörökhöz használható program készíthető.
 
-A kutatómodul a feldolgozólánc által készített adatbázisból szerzi meg a bemenő adatokat, ehhez a DB Connector komponens kiegészítése volt szükséges, az OSGi szolgáltatást a lekérdezésekhez szükséges metódussal kellett ellátni. A lekérdezett cikk szövegét, melyet a Parsoid parser HTML / RDFa formátumra alakított, először szintaktikailag helyes XML formátumba kell hozni (valid XHTML).
+A kutatómodul a feldolgozólánc által készített adatbázisból szerzi meg a bemenő adatokat, ehhez a DB Connector komponens kiegészítése volt szükséges, az OSGi szolgáltatást a lekérdezésekhez szükséges metódussal kellett ellátni.
 
-A kutatómodul a Wikipedia eltárolt cikkeiből ún. AnnotatedDocument példányokat tud készíteni, melyekben a különböző HTML elemek kategóriák szerint vannak már csoportosítva (például: linkek, paragrafusok). Az elkészített gyűjtemények alapján OpenNLP segítségével olyan természetes nyelvi feldolgozáshoz kapcsolódó feladatok végezhetőek, mint például a mondatokra bontás, szóelemzés, tokenizálás.
+Az kutatómodul az \textit{Annotare} nevet viseli. Célja, hogy XML szabvány szerint jól formázott HTML dokumentumokat nyelvileg feldolgozhatóvá és annotálhatóvá tegyen. A könyvtárnak három fő funkciója van:
 
-A kutatómodul végső felhasználása lehet például egy adott kifejezés hivatkozásainak összegyűjtése, hogy milyen kontextusban fordulnak elő a leggyakrabban, meghatározható egy nyelv átlagos szava, vagy bekezdése, rengeteg lehetőség elképzelhető.
+\begin{enumerate}
+\item Dokumentum beolvasása SAX Parser segítségével, illetve annak átalakítása. Az átalakítás után keletkezik egyrészt egy plain text dokumentum, amely átadható egy nyelvi feldolgozó modulnak, másrészt egy vagy több lista, amely az XML elemeket, mint annotációkat tartalmazza. 
+
+Az Annotare az \textit{UIMA} terminológiáját használja (de az UIMA kódjait vagy könyvtárait egyáltalán nem, azoktól független). Ebben a terminológiában a szóban forgó plain text dokumentum a \textit{Subject of Annotation} (SOFA), az annotációk pedig \textit{FeatureStructure}-ok reprezentálják. A SOFA alapértelmezett konfigurációban az XML elemek tartalmának konkatenálásából áll össze, de az XML tag-ek elhagyásával. A FeatureStructure-ok egy begin és end pozícióval rendelkeznek, amely pozíció azt jelöli ki, hogy a SOFA-ban hol kezdődik és végződik egy adott annotáció. A feldolgozáskor alapesetben minden FeatureStructure egy XML elemnek felel meg, így a begin és end azt mutatja, hogy hol keződik és hol végződik az adott elem a SOFA stringhez képest. Ez a szám nem azonos azzal a karakterpozícióval, ahol az eredeti dokumentumban az adott XML elem kezdődik, hiszen a SOFA stringbe az XML tag-ek által elfoglalt karakterek nem számítanak bele. 
+
+\begin{lstlisting}[label={lst:annotare}, caption=Példa az XML\, SOFA és FeatureStructure kapcsolatára,breaklines=true]
+XML: <a>x<b>y</b><c>z</c></a>
+SOFA: xyz
+FS-ek: (a) 0..11 ; (b) 4..8; (c) 9..11
+\end{lstlisting}
+
+A fentieken túl egyedi konfigurációval megoldható, hogy az Annotare több, közvetlenül egymás után következő pozíciójú, és azonos típusú FeatureStructure-t egybe olvasson.
+
+\item A második fontos funkció a FeatureStructure lista kiegészítése újabb annotációkkal. Ezek rendszerint egy NLP rendszer (például OpenNLP) kimenetéből származnak. Meg kell adni hozzájuk, hogy milyen XML taggel legyen reprezentálva és hogy mi a begin és end koordinátájuk.
+
+\item Végül az Annotare egy FeatureStructure listát képes XML formátumba szerializálni. Mivel a FeatureStructure-ök átlapolódhatnak, nem kell szigorú tartalmazási viszonyban lenniük (szemben az XML elemekkel), ennek a feladatnak fontos része, hogy szükség esetén a rendszer egy FeatureStructure-t több XML elemre daraboljon fel. Azt, hogy melyik elem lesz több részre bontva az elemek prioritása határozza meg, amely egy konfigurálható paraméter a FeatureStructure-ok esetében.
+\end{enumerate} 
+
+Az Annotare célja, hogy XML-ként értelmezhető dokumenumokban szereplő szövegeket NLP rendszerekkel feldolgohatóvá tegyen. Tipikusan HTML dokumentumoknál (például a Parsoid parser kimenete) vagy struktúrált dokumentumokat leíró XML fájlok esetén hasznos az alkalmazása. Ezen dokumentumok esetén az a probléma, hogy az XML tag-ek jelenléte teljesen elrontja az NLP rendszerek teljesítményét. Ha ezeket egyszerűen kitöröljük, akkor elveszítünk fontos információkat, ráadásul meg kell oldanunk azt is, hogy az egyik XML elem végén található szó ne olvadjon össze a másik XML elem elején találhatóval. Az Annotare fent részletezett funkciói ebben segítenek. Segítségükkel tetszés szerint vehetünk ki szövegrészeket a dokumentumunkból, feldolgozhatjuk azt, majd az eredményt visszailleszthetjük a strukturált dokumentumunkba.
 
 % section researchbundle (end)
 
@@ -62,7 +80,7 @@ VCPU   = 2
 MEMORY = 512
 \end{lstlisting}
 
-A mérés megkezdésekor letöltöttem az angol Wikipediáról egy adatbázis mentést (dump), melynek mérete 42 Gb volt. A rendszer indításakor megkezdi a feldolgozólánc a dump feldolgozását egy külön szálon, míg a főszálon on-the-fly követi a Wikipédiába kerülő cikkek változásait. A Wikipédia dump feldolgozása egy előfeldolgozó fázissal kezdődik, ahol a későbbi tényleges feldolgozófolyamat követhetőségéért először meg kell számolni, hogy hány cikket kell beilleszteni a dump-ból. 
+A mérés megkezdésekor letöltöttem az angol Wikipédiáról egy adatbázis mentést (dump), melynek mérete 42 Gb volt. A rendszer indításakor megkezdi a feldolgozólánc a dump feldolgozását egy külön szálon, míg a főszálon on-the-fly követi a Wikipédiába kerülő cikkek változásait. A Wikipédia dump feldolgozása egy előfeldolgozó fázissal kezdődik, ahol a későbbi tényleges feldolgozófolyamat követhetőségéért először meg kell számolni, hogy hány cikket kell beilleszteni a dump-ból. 
 
 \begin{figure}[htp]
 \centering
@@ -73,7 +91,7 @@ A mérés megkezdésekor letöltöttem az angol Wikipediáról egy adatbázis me
 
 A fent említett előfeldolgozás a mérés során használt Wikipédia mentéssel körülbelül ~36 percig tartott, ezalatt ~1,36 milliárd cikket olvasott be. Az on-the-fly feldolgozást végző ParsoidWorker-ek száma 25 darab volt, míg a későbbi dump feldolgozást 5 darab ParsoidWorker segítette. Az egy órás mérés végén az adatbázis mérete, üres adatbázissal indítva a mérést 644 Mb lett, ezalatt 4298 cikket dolgozott fel a rendszer. A Statistics komponens által készített részletes feldolgozási statisztikák közül egy látható a \ref{fig:storedarticles}.~ábrán.
 
-\begin{figure}[htp]
+\begin{figure}[htb]
 \centering
 \includegraphics[scale=0.3]{img/measurement_cpu}
 \caption{A mérés során mért CPU használat}
@@ -82,7 +100,7 @@ A fent említett előfeldolgozás a mérés során használt Wikipédia mentéss
 
 A teljesítményméréseket az \textit{iostat} nevű ingyenes és nyíltforráskódú monitorozó szoftverrel végeztem, mely képes a processzor és a diszk használatot is monitorozni, valamint a különböző szálak működésének megfigyeléséhez a \textit{top} programot használtam. A processzor használatot ábrázoló diagramon (\ref{fig:measurement_cpu}.~ábra) világosan elkülönül az előfeldolgozás fázisa és az a fázis, amikor az on-the-fly és dump feldolgozás egyszerre történik. Az alkalmazás által használt processzoridő (\texttt{\%user}, mely a felhasználói módban eltöltött processzoridőt mutatja) körülbelül 2 magot használ ki a rendelkezésre álló erőforrásból, utóbbinál nyilvánvalóan visszaesik kicsit a teljesítmény és átlagosan 1 magnyi erőforrást tud kihasználni a feldolgozólánc.
 
-\begin{figure}[htp]
+\begin{figure}[htb]
 \centering
 \includegraphics[scale=0.3]{img/measurement_io}
 \caption{A mérés során mért lemezhasználat}

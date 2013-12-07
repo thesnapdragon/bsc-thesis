@@ -1,0 +1,35 @@
+\select@language {magyar} \contentsline {chapter}{Kivonat}{3}{chapter*.3}
+\select@language {magyar} \contentsline {chapter}{Abstract}{4}{chapter*.4}
+\select@language {magyar} \contentsline {chapter}{Bevezet\IeC {\H o}}{5}{chapter*.5}
+\select@language {magyar} \contentsline {chapter}{\numberline {1}Hasonl\IeC {\'o} megold\IeC {\'a}sok vizsg\IeC {\'a}lata}{6}{chapter.1}
+\select@language {magyar} \contentsline {section}{\numberline {1.1}Egy \IeC {\'\i }g\IeC {\'e}retes megold\IeC {\'a}s: Wikipedia Miner}{7}{section.1.1}
+\select@language {magyar} \contentsline {section}{\numberline {1.2}Tanuls\IeC {\'a}gok}{8}{section.1.2}
+\select@language {magyar} \contentsline {chapter}{\numberline {2}Az OSGi keretrendszerr\IeC {\H o}l}{10}{chapter.2}
+\select@language {magyar} \contentsline {section}{\numberline {2.1}Bundle}{10}{section.2.1}
+\select@language {magyar} \contentsline {section}{\numberline {2.2}Service, Service Registry}{11}{section.2.2}
+\select@language {magyar} \contentsline {section}{\numberline {2.3}\IeC {\'E}letciklus}{14}{section.2.3}
+\select@language {magyar} \contentsline {chapter}{\numberline {3}Tervez\IeC {\'e}s}{15}{chapter.3}
+\select@language {magyar} \contentsline {section}{\numberline {3.1}WikiBot bundle}{16}{section.3.1}
+\select@language {magyar} \contentsline {section}{\numberline {3.2}Parser bundle}{17}{section.3.2}
+\select@language {magyar} \contentsline {subsection}{\numberline {3.2.1}Wikipedia dump feldolgoz\IeC {\'a}s}{20}{subsection.3.2.1}
+\select@language {magyar} \contentsline {section}{\numberline {3.3}Databaseconnector bundle}{20}{section.3.3}
+\select@language {magyar} \contentsline {section}{\numberline {3.4}Database}{21}{section.3.4}
+\select@language {magyar} \contentsline {section}{\numberline {3.5}Logger bundle}{22}{section.3.5}
+\select@language {magyar} \contentsline {section}{\numberline {3.6}Statistics bundle}{23}{section.3.6}
+\select@language {magyar} \contentsline {chapter}{\numberline {4}Implement\IeC {\'a}ci\IeC {\'o}}{27}{chapter.4}
+\select@language {magyar} \contentsline {section}{\numberline {4.1}WikiBot bundle}{27}{section.4.1}
+\select@language {magyar} \contentsline {section}{\numberline {4.2}Parser bundle}{28}{section.4.2}
+\select@language {magyar} \contentsline {section}{\numberline {4.3}DatabaseConnector bundle}{32}{section.4.3}
+\select@language {magyar} \contentsline {section}{\numberline {4.4}Logger bundle}{32}{section.4.4}
+\select@language {magyar} \contentsline {section}{\numberline {4.5}Statistics bundle}{33}{section.4.5}
+\select@language {magyar} \contentsline {chapter}{\numberline {5}Tesztel\IeC {\'e}s \IeC {\'e}s m\IeC {\'e}r\IeC {\'e}sek}{34}{chapter.5}
+\select@language {magyar} \contentsline {section}{\numberline {5.1}A tesztel\IeC {\'e}shez haszn\IeC {\'a}lt eszk\IeC {\"o}z\IeC {\"o}k}{34}{section.5.1}
+\select@language {magyar} \contentsline {section}{\numberline {5.2}A feldolgoz\IeC {\'o}l\IeC {\'a}ncra \IeC {\'e}p\IeC {\"u}l\IeC {\H o} kutat\IeC {\'o}modul}{35}{section.5.2}
+\select@language {magyar} \contentsline {section}{\numberline {5.3}M\IeC {\'e}r\IeC {\'e}si eredm\IeC {\'e}nyek}{35}{section.5.3}
+\select@language {magyar} \contentsline {chapter}{\numberline {6}\IeC {\'E}rt\IeC {\'e}kel\IeC {\'e}s, tov\IeC {\'a}bbfejleszt\IeC {\'e}si lehet\IeC {\H o}s\IeC {\'e}gek}{40}{chapter.6}
+\select@language {magyar} \contentsline {chapter}{\IeC {\'A}br\IeC {\'a}k jegyz\IeC {\'e}ke}{43}{chapter*.36}
+\select@language {magyar} \contentsline {chapter}{T\IeC {\'a}bl\IeC {\'a}zatok jegyz\IeC {\'e}ke}{44}{chapter*.37}
+\select@language {magyar} \contentsline {chapter}{Forr\IeC {\'a}sk\IeC {\'o}dok jegyz\IeC {\'e}ke}{45}{chapter*.38}
+\select@language {magyar} \contentsline {chapter}{F\IeC {\"u}ggel\IeC {\'e}k}{46}{chapter*.39}
+\select@language {magyar} \contentsline {section}{\numberline {6.1}WikiProcessor}{46}{section.6.1}
+\select@language {magyar} \contentsline {chapter}{Irodalomjegyz\IeC {\'e}k}{46}{chapter*.38}

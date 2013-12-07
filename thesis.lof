@@ -1,0 +1,33 @@
+\select@language {magyar} \addvspace {10\p@ }
+\select@language {magyar} \contentsline {figure}{\numberline {1.1.}{\ignorespaces Wikipedia Miner architekt\IeC {\'u}ra (forr\IeC {\'a}s: Artificial Intelligence, Wikipedia and Semi-Structured Resources\cite {aijournal})\relax }}{8}{figure.caption.6}
+\select@language {magyar} \addvspace {10\p@ }
+\select@language {magyar} \contentsline {figure}{\numberline {2.1.}{\ignorespaces DependencyManager oszt\IeC {\'a}lydiagram\relax }}{12}{figure.caption.7}
+\select@language {magyar} \contentsline {figure}{\numberline {2.2.}{\ignorespaces Bundle \IeC {\'e}letciklus (forr\IeC {\'a}s: OSGi Service Platform Release 2 \cite {osgi})\relax }}{14}{figure.caption.8}
+\select@language {magyar} \addvspace {10\p@ }
+\select@language {magyar} \contentsline {figure}{\numberline {3.1.}{\ignorespaces Az alkalmaz\IeC {\'a}s tervezett komponensei\relax }}{15}{figure.caption.10}
+\select@language {magyar} \contentsline {figure}{\numberline {3.2.}{\ignorespaces A WikiBot komponens haszn\IeC {\'a}lati esetei\relax }}{16}{figure.caption.11}
+\select@language {magyar} \contentsline {figure}{\numberline {3.3.}{\ignorespaces A tervezett WikiBot oszt\IeC {\'a}lydiagramja\relax }}{16}{figure.caption.12}
+\select@language {magyar} \contentsline {figure}{\numberline {3.4.}{\ignorespaces A Parser komponens haszn\IeC {\'a}lati esetei\relax }}{18}{figure.caption.13}
+\select@language {magyar} \contentsline {figure}{\numberline {3.5.}{\ignorespaces Observer minta haszn\IeC {\'a}lata a Parser komponensben\relax }}{18}{figure.caption.14}
+\select@language {magyar} \contentsline {figure}{\numberline {3.6.}{\ignorespaces A Parser komponens oszt\IeC {\'a}lydiagramja\relax }}{19}{figure.caption.15}
+\select@language {magyar} \contentsline {figure}{\numberline {3.7.}{\ignorespaces A DBConnector haszn\IeC {\'a}lati esetei\relax }}{20}{figure.caption.16}
+\select@language {magyar} \contentsline {figure}{\numberline {3.8.}{\ignorespaces A DBConnector komponens oszt\IeC {\'a}lydiagramja\relax }}{21}{figure.caption.17}
+\select@language {magyar} \contentsline {figure}{\numberline {3.9.}{\ignorespaces H2DB szerver m\IeC {\'o}dban (forr\IeC {\'a}s: H2 Database Engine \cite {h2db})\relax }}{22}{figure.caption.18}
+\select@language {magyar} \contentsline {figure}{\numberline {3.10.}{\ignorespaces A tervezett adatb\IeC {\'a}zis Article t\IeC {\'a}bl\IeC {\'a}ja\relax }}{22}{figure.caption.19}
+\select@language {magyar} \contentsline {figure}{\numberline {3.11.}{\ignorespaces A Logger komponens haszn\IeC {\'a}lati esetei\relax }}{23}{figure.caption.20}
+\select@language {magyar} \contentsline {figure}{\numberline {3.12.}{\ignorespaces A Logger komponens oszt\IeC {\'a}lydiagramja\relax }}{23}{figure.caption.22}
+\select@language {magyar} \contentsline {figure}{\numberline {3.13.}{\ignorespaces A Statistics komponens haszn\IeC {\'a}lati esetei\relax }}{24}{figure.caption.23}
+\select@language {magyar} \contentsline {figure}{\numberline {3.14.}{\ignorespaces A Statistics komponens oszt\IeC {\'a}lydiagramja\relax }}{24}{figure.caption.25}
+\select@language {magyar} \addvspace {10\p@ }
+\select@language {magyar} \contentsline {figure}{\numberline {4.1.}{\ignorespaces WikiBot komponens indul\IeC {\'a}sa\relax }}{28}{figure.caption.26}
+\select@language {magyar} \contentsline {figure}{\numberline {4.2.}{\ignorespaces Esem\IeC {\'e}nykezel\IeC {\'e}s a WikiBot-ban\relax }}{28}{figure.caption.27}
+\select@language {magyar} \contentsline {figure}{\numberline {4.3.}{\ignorespaces A Parser komponens indul\IeC {\'a}sa\relax }}{29}{figure.caption.28}
+\select@language {magyar} \contentsline {figure}{\numberline {4.4.}{\ignorespaces A WikiWorker sz\IeC {\'a}l m\IeC {\H u}k\IeC {\"o}d\IeC {\'e}se\relax }}{30}{figure.caption.29}
+\select@language {magyar} \contentsline {figure}{\numberline {4.5.}{\ignorespaces A Logger komponens indul\IeC {\'a}sa\relax }}{32}{figure.caption.30}
+\select@language {magyar} \addvspace {10\p@ }
+\select@language {magyar} \contentsline {figure}{\numberline {5.1.}{\ignorespaces Komponensek f\IeC {\"u}gg\IeC {\H o}s\IeC {\'e}gei\relax }}{35}{figure.caption.31}
+\select@language {magyar} \contentsline {figure}{\numberline {5.2.}{\ignorespaces A m\IeC {\'e}r\IeC {\'e}si \IeC {\"o}ssze\IeC {\'a}ll\IeC {\'\i }t\IeC {\'a}s deployment diagramja\relax }}{36}{figure.caption.32}
+\select@language {magyar} \contentsline {figure}{\numberline {5.3.}{\ignorespaces A m\IeC {\'e}r\IeC {\'e}s sor\IeC {\'a}n feldolgozott cikkek statisztik\IeC {\'a}ja\relax }}{37}{figure.caption.33}
+\select@language {magyar} \contentsline {figure}{\numberline {5.4.}{\ignorespaces A m\IeC {\'e}r\IeC {\'e}s sor\IeC {\'a}n m\IeC {\'e}rt CPU haszn\IeC {\'a}lat\relax }}{37}{figure.caption.34}
+\select@language {magyar} \contentsline {figure}{\numberline {5.5.}{\ignorespaces A m\IeC {\'e}r\IeC {\'e}s sor\IeC {\'a}n m\IeC {\'e}rt lemezhaszn\IeC {\'a}lat\relax }}{38}{figure.caption.35}
+\select@language {magyar} \addvspace {10\p@ }

@@ -1,0 +1,35 @@
+\BOOKMARK [0][-]{chapter*.3}{Kivonat}{}% 1
+\BOOKMARK [0][-]{chapter*.4}{Abstract}{}% 2
+\BOOKMARK [0][-]{chapter*.5}{Bevezeto}{}% 3
+\BOOKMARK [0][-]{chapter.1}{Hasonl\363 megold\341sok vizsg\341lata}{}% 4
+\BOOKMARK [1][-]{section.1.1}{Egy \355g\351retes megold\341s: Wikipedia Miner}{chapter.1}% 5
+\BOOKMARK [1][-]{section.1.2}{Tanuls\341gok}{chapter.1}% 6
+\BOOKMARK [0][-]{chapter.2}{Az OSGi keretrendszerrol}{}% 7
+\BOOKMARK [1][-]{section.2.1}{Bundle}{chapter.2}% 8
+\BOOKMARK [1][-]{section.2.2}{Service, Service Registry}{chapter.2}% 9
+\BOOKMARK [1][-]{section.2.3}{\311letciklus}{chapter.2}% 10
+\BOOKMARK [0][-]{chapter.3}{Tervez\351s}{}% 11
+\BOOKMARK [1][-]{section.3.1}{WikiBot bundle}{chapter.3}% 12
+\BOOKMARK [1][-]{section.3.2}{Parser bundle}{chapter.3}% 13
+\BOOKMARK [2][-]{subsection.3.2.1}{Wikipedia dump feldolgoz\341s}{section.3.2}% 14
+\BOOKMARK [1][-]{section.3.3}{Databaseconnector bundle}{chapter.3}% 15
+\BOOKMARK [1][-]{section.3.4}{Database}{chapter.3}% 16
+\BOOKMARK [1][-]{section.3.5}{Logger bundle}{chapter.3}% 17
+\BOOKMARK [1][-]{section.3.6}{Statistics bundle}{chapter.3}% 18
+\BOOKMARK [0][-]{chapter.4}{Implement\341ci\363}{}% 19
+\BOOKMARK [1][-]{section.4.1}{WikiBot bundle}{chapter.4}% 20
+\BOOKMARK [1][-]{section.4.2}{Parser bundle}{chapter.4}% 21
+\BOOKMARK [1][-]{section.4.3}{DatabaseConnector bundle}{chapter.4}% 22
+\BOOKMARK [1][-]{section.4.4}{Logger bundle}{chapter.4}% 23
+\BOOKMARK [1][-]{section.4.5}{Statistics bundle}{chapter.4}% 24
+\BOOKMARK [0][-]{chapter.5}{Tesztel\351s \351s m\351r\351sek}{}% 25
+\BOOKMARK [1][-]{section.5.1}{A tesztel\351shez haszn\341lt eszk\366z\366k}{chapter.5}% 26
+\BOOKMARK [1][-]{section.5.2}{A feldolgoz\363l\341ncra \351p\374lo kutat\363modul}{chapter.5}% 27
+\BOOKMARK [1][-]{section.5.3}{M\351r\351si eredm\351nyek}{chapter.5}% 28
+\BOOKMARK [0][-]{chapter.6}{\311rt\351kel\351s, tov\341bbfejleszt\351si lehetos\351gek}{}% 29
+\BOOKMARK [0][-]{chapter*.36}{\301br\341k jegyz\351ke}{}% 30
+\BOOKMARK [0][-]{chapter*.37}{T\341bl\341zatok jegyz\351ke}{}% 31
+\BOOKMARK [0][-]{chapter*.38}{Forr\341sk\363dok jegyz\351ke}{}% 32
+\BOOKMARK [0][-]{chapter*.38}{Irodalomjegyz\351k}{}% 33
+\BOOKMARK [0][-]{chapter*.39}{F\374ggel\351k}{}% 34
+\BOOKMARK [1][-]{section.6.1}{WikiProcessor}{chapter*.39}% 35
