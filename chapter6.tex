@@ -1,7 +1,18 @@
 \chapter{Értékelés, továbbfejlesztési lehetőségek}
 \label{cha:ending}
 
-A tesztelés és a mérések során arra jutottam, hogy az elkészített feldolgozólánc képes ellátni azokat a feladatokat, és teljesíti a meghatározott követelményeket, melyek a rendszer tervezése előtt célul lettek kitűzve. Az elkészített alkalmazás úgy lett megtervezve, hogy a korábbi megoldások hiányosságait próbálja pótolni és az on-the-fly feldolgozás miatt hiánypótló is lehet a szemistruktúrált adatforrást feldolgozó rendszerek között.
+A feladatkiírásban specifikált követelményeknek megfelelően elkészítettem a rendszert:
+
+\begin{itemize}
+	\item Áttekintettem az elérhető részben struktúrált tudásbázisokat, mint például a Wikipédiát feldolgozó megoldásokat.
+	\item Ismertettem az OSGi rendszer felépítését, legfontosabb tulajdonságait és használatát. Bemutatásra kerültek az OSGi keretrendszerrel való fejlesztéshez használható eszközök, mint például a gosh szkriptek, és az Apache Felix program.
+	\item Elkészítettem OSGi komponens formájában egy IRC botot, mely a Wikipédia változásairól folyamatosan értesül, így folyamatos bemenetet szolgáltat az on-the-fly feldolgozáshoz.
+	\item Elkészítettem OSGi komponens formájában egy MediaWiki Parsoid parsert használó többszálú megoldást, mely a Parsoid eredeti sebességének többszörösére képes és cluster-t létrehozva a parserekből egy jól skálázható, használható megoldás keletkezett.
+	\item Integráltam az MTA SZTAKI által készített teszt kutatómodult, melynek könnyű beépítése is szemlélteti a rendszer könnyen továbbfejleszthetőségét, kiegészíthetőségét.
+	\item Teszteltem a rendszer képességeit, funkcionalitását egy méréssel, úgy hogy az on-the-fly feldolgozás és egy teljes Wikipédia dump feldolgozása is el lett indítva.
+\end{itemize}
+
+A tesztelés és a mérések során arra jutottam, hogy az elkészített feldolgozólánc képes ellátni azokat a feladatokat, és teljesíti a meghatározott követelményeket, melyek a rendszer tervezése előtt célul lettek kitűzve. Az elkészített alkalmazás úgy lett megtervezve, hogy a korábbi megoldások hiányosságait próbálja pótolni és az on-the-fly feldolgozás miatt hiánypótló is lehet a részben struktúrált adatforrást feldolgozó rendszerek között.
 
 A hasonló megoldások vizsgálatánál láttuk, hogy egy Wikipédiához hasonló mennyiségű adathalmaz feldolgozása semmilyen esetben sem triviális, a használható feldolgozáshoz idő és számítási kapacitás szükséges. A teszteléskor rendelkezésemre álló erőforrások elegendőek voltak a funkcionalitás ellenőrzéséhez, de számítási kapacitásuk a használhatóságot nem érte el. Korábbi vizsgálatok azonban azt mutatták, hogy a rendszer lineárisan skálázódik, így több erőforrás alkalmazásával a feldolgozólánc minden előnyét ki lehet használni.
 
@@ -20,9 +31,9 @@ A kommunikáció azonban a NodeJS-ben írt Parsoid és az OSGi platform között
 
 Az eredeti feldolgozólánc architektúrája, melyben nem szerepelt még a dumpfeldolgozás, nagyon egyszerű és átlátható volt, így a célnak megfelelt. A jó tervezésnek köszönhetően a dump feldolgozás is csak két meglévő osztály példányosítását és egy a feladatot végző rész implementációját igényelte. Ebben a helyzetben még mindig elég egyszerű és átlátható a rendszer működése, de látható, hogy az ilyen jellegű kiegészítések szempontjából nem skálázódik egy idő után túl jól a rendszer. Újabb feldolgozási láncok kialakítására a jelenlegiek mellett tehát egyre nehezebbé válik. Ennek a problémának a megoldása lehet, ezen feldolgozóláncok létrehozásának általánosítása.
     
-Egyik lehetőség lehet az \textit{Apache Stanbol} nyíltforráskódú és moduláris szoftver stack kiegészítése az eddig elkészített feldolgozólánccal, mely az Apache Stanbol részeként használhatná az teljes software stack egyes komponenseit. Az Apache Stanbol szintén Apache Felix-et használ OSGi futtatókörnyezetként, így ilyen szempontból nem lenne bonyolult a megoldás kivitelezése. A feldolgozóláncok dinamikus előállítása a Stanbol-ban elérhető \textit{Enhancement Chain}-ek segítségével válna elérhetővé. Ennek a megoldásnak a hátránya, hogy az Apache Stanbol funkcióit nem egészítené ki a feldolgozólánc, hanem inkább csak használna azokból néhányat.
+Egyik lehetőség lehet az \textit{Apache Stanbol} \cite{stanbol} nyíltforráskódú és moduláris szoftver stack kiegészítése az eddig elkészített feldolgozólánccal, mely az Apache Stanbol részeként használhatná az teljes software stack egyes komponenseit. Az Apache Stanbol szintén Apache Felix-et használ OSGi futtatókörnyezetként, így ilyen szempontból nem lenne bonyolult a megoldás kivitelezése. A feldolgozóláncok dinamikus előállítása a Stanbol-ban elérhető \textit{Enhancement Chain}-ek segítségével válna elérhetővé. Ennek a megoldásnak a hátránya, hogy az Apache Stanbol funkcióit nem egészítené ki a feldolgozólánc, hanem inkább csak használna azokból néhányat.
     
-A fent felsorolt okok miatt érdemes lehet, saját implementációt készíteni a feldolgozóláncok készítéséhez, könnyen kiegészíthető és továbbfejleszthető architektúrával. Ilyen problémák megoldására készült az \textit{Apache Commons Chain} implementációja, mely a \textit{Chain of Responsibility} és \textit{Command} tervezési minta kombinációja.
+A fent felsorolt okok miatt érdemes lehet, saját implementációt készíteni a feldolgozóláncok készítéséhez, könnyen kiegészíthető és továbbfejleszthető architektúrával. Ilyen problémák megoldására készült az \textit{Apache Commons Chain} \cite{commonschain} implementációja, mely a \textit{Chain of Responsibility} és \textit{Command} tervezési minta kombinációja.
     
 A Chain of Responsibility minta alapgondolata az, hogy szétválasztja a kérést küldõket a fogadóktól azáltal, hogy több objektumnak adja meg a lehetõséget a kérés lekezelésére. A kérés egy objektumokból álló lánc láncszemeit járja be egészen addig, amíg valamelyik láncszem le nem kezeli.
     
@@ -35,6 +46,6 @@ A jelenlegi rendszer leállásával a működéssel kapcsolatos több informáci
 Leállításkor lehetőség van az OSGi komponensekben az aktuális futás közben használt információk elmentésére az adatbázisban. Például a QueueManager példányokban tárolt információkat ilyenkor lehetne elmenteni, vagy a Statistics komponens által készített statisztikák eltárolását is ekkor kellene megoldani.
 \end{description}
 
-A félév során folyamatosan újabb és újabb technológiákat ismertem meg, ezekben sikerült kellőképpen elmélyedni, így azt hiszem rengeteget tanultam az elvégzett munka alatt. Ezenkívül sikerült egy olyan szoftverrendszer teljes életciklusát végigkövetni és megvalósítani, mely megfelel a kitűzött céloknak és egy használható keretrendszert nyújt azok számára, akik egy ilyen hatalmas tudásbázist akarnak egyszerűen felhasználni, mint a Wikipédia.
+A félév során folyamatosan újabb és újabb technológiákat ismertem meg, ezekben sikerült kellőképpen elmélyedni, így azt hiszem rengeteget tanultam az elvégzett munka alatt. Ezen kívül sikerült egy olyan szoftverrendszer teljes életciklusát végigkövetni és megvalósítani, mely megfelel a kitűzött céloknak és egy használható keretrendszert nyújt azok számára, akik egy ilyen hatalmas tudásbázist akarnak egyszerűen felhasználni, mint a Wikipédia.
 
 % chapter ending (end)

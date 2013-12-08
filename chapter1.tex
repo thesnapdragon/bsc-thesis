@@ -4,17 +4,17 @@
 Mielőtt a saját Wikipédia alapú rendszer tervezésének nekiláttam volna megvizsgáltam a hasonló célú, elérhető megoldásokat, hogy utána a tapasztalatokból kiindulva láthassak neki a munkának. Megpróbáltam összegyűjteni az összes hasonló témakört feldolgozó alkalmazást, majd ezeket egyesével megvizsgáltam, milyen előnyökkel, hátrányokkal rendelkeznek.
 
 \begin{description}
-	\item[WikiNet\cite{wikinet}] A WikiNet egy teljesen struktúrált adatszerkezetű tudásbázist, másnéven ontológiát épít fel. Ez egy Perl nyelvű szkriptek gyűjteményéből álló megoldás, a Wikipédia egy statikus, letöltött verzióját használja forrásként, a kinyert fogalmakat és kapcsolatokat külön szöveges fájlokban tárolja el.
+	\item[WikiNet\cite{wikinet}] A WikiNet egy teljesen struktúrált adatszerkezetű tudásbázist, más néven ontológiát épít fel. Ez egy Perl nyelvű szkriptek gyűjteményéből álló megoldás, a Wikipédia egy statikus, letöltött verzióját használja forrásként, a kinyert fogalmakat és kapcsolatokat külön szöveges fájlokban tárolja el.
 	
 \textit{Elérhetőség:}\\
 \url{http://www.h-its.org/english/research/nlp/download/wikinet.php}
 
-	\item[DBpedia] Ez a megoldás a Wikipédia dump-ján alapul, belőle tényszerű információkat nyer ki és rögzít struktúrált formában, melyet ezután a weben közzétéve a felhasználók számára egy SQL szerű nyelvvel lekérdezhetővé tesz. A alkalmazás Scala, Java nyelven íródott, adatbázisként Virtuoso Universal Server-t használ.
+	\item[DBpedia] Ez a megoldás is a Wikipédia dump-ján alapul, belőle tényszerű információkat nyer ki és rögzít struktúrált formában, melyet ezután a weben közzétéve a felhasználók számára egy SQL szerű nyelvvel lekérdezhetővé tesz. A alkalmazás Scala, Java nyelven íródott, adatbázisként Virtuoso Universal Server-t használ.
 	
 \textit{Elérhetőség:}\\
 \url{http://dbpedia.org/}
 
-\item[BabelNet\cite{babelnet}] A BabelNet egy Java nyelven írt alkalmazás, ontológiát készít más adatforrások (Wikipédia dump, WordNet) alapján és ezekből egy ``enciklopédikus szótárat'' készít a felhasználók számára. Egy adott fogalomra keresve a szemantikailag kapcsolódó fogalmak is megjelennek, valamint ezek szinonímái (a BabelNet elnevezése szerint \textit{synset}-ek), és minden szinonímához tartozik egy rövid definíció (\textit{gloss}) több nyelven.
+\item[BabelNet\cite{babelnet}] A BabelNet egy Java nyelven írt alkalmazás, ontológiát készít más adatforrások (Wikipédia dump, WordNet) alapján és ezekből egy ``enciklopédikus szótárat'' készít a felhasználók számára. Egy adott fogalomra keresve a szemantikailag kapcsolódó fogalmak is megjelennek, valamint ezek szinonimái (a BabelNet elnevezése szerint \textit{synset}-ek), és minden szinonimához tartozik egy rövid definíció (\textit{gloss}) több nyelven.
 	
 \textit{Elérhetőség:}\\
 \url{http://lcl.uniroma1.it/babelnet/}
@@ -24,7 +24,7 @@ Mielőtt a saját Wikipédia alapú rendszer tervezésének nekiláttam volna me
 \textit{Elérhetőség:}\\
 \url{http://www.ukp.tu-darmstadt.de/software/jwpl/}
 
-\item[Wikipedia Preprocessor] Ezzel az eszközzel más alkalmazások számára lehet egy Wikipédia dump-ot feldolgozhatóbb formába hozni. A statikus dump-ból kiinduló alkalmazásoknál erre szükség is van, mivel a például Wikipédia 2007. július 19-i XML formátumban letölthető tartalma is 12 GB méretű, amit nyers formában szinte lehetetlen hatékonyan felhasználni.
+\item[Wikipedia Preprocessor] Ezzel az eszközzel más alkalmazások számára lehet egy Wikipédia dump-ot feldolgozhatóbb formába hozni. A statikus dump-ból kiinduló alkalmazásoknál erre szükség is van, mivel a például Wikipédia 2013. október 2-i XML formátumban letölthető tartalma is 44 GB méretű, amit nyers formában szinte lehetetlen hatékonyan felhasználni.
 	
 \textit{Elérhetőség:}\\
 \url{http://www.cs.technion.ac.il/~gabr/resources/code/wikiprep/}

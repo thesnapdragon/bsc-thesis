@@ -3,7 +3,7 @@
 
 Az OSGi Alliance \cite{osgi} által fejlesztett OSGi (\textit{Open Services Gateway initiative}) egy Java nyelvű, dinamikus, szolgáltatás orientált komponens modell és keretrendszer, mellyel kiterjeszthető az alap Java nyelven készült programok funkcionalitása. Használatával elérhető válik egy komponens alapú fejlesztés, ahol alkalmazásokat (illetve komponenseket) távolról elérve telepíthetjük, elindíthatjuk, leállíthatjuk, frissíthetjük, vagy törölhetjük anélkül, hogy a teljes alkalmazást leállítanánk és újra elindítanánk. A standard Java nyelven íródott alkalmazásoknál ez egy fontos hiányosság, hiszen az információs rendszerek sok területén nem engedhetőek meg akár a pillanatnyi leállások sem.
 
-A flexibilitás és újrafelhasználhatóság követelményeknek tehát nagyon jól megfelel az OSGi keretrendszer, ezért is esett rá a választás. Léteznek természetesen más, komponens alapú modelt használó technológiák, például: Microsoft Common Object Model, Enterprise JavaBeans, \mbox{CORBA} Component Model. Ezek közül azonban a legtöbb egy komplex programozási modelen alapul, amely megköveteli konvenciók követését és az OSGi-al szemben nem támogatják a komponensek dinamikus frissítését, így flexibilitás szempontjából ilyen módon elmaradnak.
+A flexibilitás és újrafelhasználhatóság követelményeknek tehát nagyon jól megfelel az OSGi keretrendszer, ezért is esett rá a választás. Léteznek természetesen más, komponens alapú modellt használó technológiák, például: Microsoft Common Object Model, Enterprise JavaBeans, \mbox{CORBA} Component Model. Ezek közül azonban a legtöbb egy komplex programozási modellen alapul, amely megköveteli konvenciók követését és az OSGi-al szemben nem támogatják a komponensek dinamikus frissítését, így flexibilitás szempontjából ilyen módon elmaradnak.
 
 \begin{figure}[htp]
 \centering
@@ -72,7 +72,7 @@ A szolgáltatások kezelése ezen módszerek használatával azonban nem skálá
 \label{fig:class_dependencymanager}
 \end{figure}
 
-	\item[Declarative Services] A Declarative Services egy komponens model, melynek felépítését befolyásolta a korábbi Service Binder megoldás. A technológia célja, hogy leegyszerűsítse az olyan OSGi komponensek készítését, melyek OSGi szolgáltatásokat használnak.
+	\item[Declarative Services] A Declarative Services egy komponens modell, melynek felépítését befolyásolta a korábbi Service Binder megoldás. A technológia célja, hogy leegyszerűsítse az olyan OSGi komponensek készítését, melyek OSGi szolgáltatásokat használnak.
 	
 	Fontos jellemzők, hogy használatával nincs szükség explicit módon implementálni a szolgáltatások kiajánlását és felhasználását, ezek deklaratív módon teljes mértékben XML segítségével végezhetőek el. Leszármaztatásra vagy interfész implementációra nincs szükség; a szolgáltatások implementációja a \textit{lazy loading} tervezési mintát követi; a komponensek konfigurációja bármikor megtörténhet Configuration Admin szolgáltatás segítségével.
 	
@@ -90,7 +90,7 @@ manager.add(createService()
         .setRequired(false));
 \end{lstlisting}
 
-    \item[iPOJO] Az iPOJO komponens model központi koncepciója, hogy ne legyen szükség POJO példányoknál bonyolultabb objektumok használatára. Használatát tekintve nagyon hasonló a Declarative Services-hez, azonban az iPOJO kicsit több eszközt kínál a fejlesztőknek. A komponenshez szükséges szolgáltatásokat és azok függőségeit szintén XML fájlban kell deklaratív módon specifikálni, és a rendszer automatikusan kezeli ezeket a függőségeket. Újdonságok a korábbi megoldásokhoz képest például a Java annotációk támogatása, API hozzáférés a belső működéshez, könnyű kiegészíthetőség és beépített távoli konfiguráció JMX segítségével.
+    \item[iPOJO] Az iPOJO komponens modell központi koncepciója, hogy ne legyen szükség POJO (\textit{Plain Old Java Object}) példányoknál bonyolultabb objektumok használatára. Használatát tekintve nagyon hasonló a Declarative Services-hez, azonban az iPOJO kicsit több eszközt kínál a fejlesztőknek. A komponenshez szükséges szolgáltatásokat és azok függőségeit szintén XML fájlban kell deklaratív módon specifikálni, és a rendszer automatikusan kezeli ezeket a függőségeket. Újdonságok a korábbi megoldásokhoz képest például a Java annotációk támogatása, API hozzáférés a belső működéshez, könnyű kiegészíthetőség és beépített távoli konfiguráció JMX segítségével.
  
 \end{description}
 
@@ -105,7 +105,7 @@ Az OSGi keretrendszer dinamikusságát a \textit{Life-cycle} (életciklus) rends
 
 \begin{figure}[htb]
 \centering
-\includegraphics[scale=0.5]{img/bundle_lifecycle}
+\includegraphics[scale=0.7]{img/bundle_lifecycle}
 \caption{Bundle életciklus (forrás: OSGi Service Platform Release 2 \cite{osgi})}
 \label{fig:bundle_lifecycle}
 \end{figure}
