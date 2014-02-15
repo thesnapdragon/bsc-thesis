@@ -1,4 +1,4 @@
-thesis
+BSc thesis
 ======
 
-Thesis: Real-time Processing of Wikipedia Based on OSGi
+Real-time Processing of Wikipedia Based on OSGi
